@@ -1,0 +1,8 @@
+# macos
+.DS_Stroe
+
+# python cache
+__pycache__/
+
+# env
+.env
