@@ -3,16 +3,16 @@ import requests,os,pymysql
 from bson import ObjectId
 
 # 读取环境变量
-agd_weatherApi_key = os.getenv('wf_agd_weatherApi_key')
-city_list = os.getenv('wf_city_list').split(',')
-agd_weahterApi_url = os.getenv('wf_agd_weatherApi_url')
+app_wf_apikey = os.getenv('app_wf_api_key')
+city_list = os.getenv('app_wf_normal_city').split(',')
+agd_weahterApi_url = os.getenv('app_wf_api_url')
 
 # 链接数据库
-mysql_host = os.getenv('mysql_sit1_host')
-mysql_port = int(os.getenv('mysql_sit1_port'))
-mysql_user = os.getenv('mysql_sit1_user')
-mysql_pwd = os.getenv('mysql_sit1_pwd')
-mysql_db = os.getenv('qinglong_db')
+mysql_host = os.getenv('base_mysql_host')
+mysql_port = int(os.getenv('base_mysql_port'))
+mysql_user = os.getenv('base_mysql_user')
+mysql_pwd = os.getenv('base_mysql_pwd')
+mysql_db = os.getenv('base_qinglong_db')
 
 mysql_config = {
     'host': mysql_host,
@@ -24,7 +24,7 @@ mysql_config = {
 
 mysql_connection = pymysql.connect(**mysql_config)
 
-wf_table_name = os.getenv('wf_table_name')
+wf_table_name = os.getenv('app_wf_table_all')
 insert_sql = f"""
 INSERT INTO {wf_table_name} (
     province, city, adcode, report_time, request_id, 
@@ -45,7 +45,7 @@ rslt_list = []
 for each_city in city_list:
 
     wf_params = {
-        'key': agd_weatherApi_key,
+        'key': app_wf_apikey,
         'city': each_city,
         'extensions': 'all',
         'output': 'JSON'
