@@ -20,6 +20,22 @@ def start_connection():
     
     return pymysql.connect(**mysql_config)
 
+def start_custom_connection(mysql_config: dict):
+
+    try:
+        mysql_conf = {
+            'host': mysql_config['host'],
+            'port': mysql_config['port'],
+            'user': mysql_config['user'],
+            'password': mysql_config['password'],
+            'database': mysql_config['database']
+        }
+
+        return pymysql.connect(**mysql_conf)
+    
+    except Exception as e:
+        print(e)    
+
 def close_connection(connection_ins):
     
     if connection_ins:
@@ -32,5 +48,18 @@ def write_many(connection, sql:str, data_list: list):
             cursor.executemany(sql,data_list)
             connection.commit()
 
+    except Exception as e:
+        print(e)
+
+def fetch_all(connection, sql:str, data_list: list):
+
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(sql,data_list)
+            columns = [col[0] for col in cursor.description]
+            results = cursor.fetchall()
+            structured_results = [dict(zip(columns,row)) for row in results]
+            return structured_results
+        
     except Exception as e:
         print(e)
