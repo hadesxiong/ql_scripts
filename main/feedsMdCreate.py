@@ -3,11 +3,7 @@ import os,sys
 # 添加引用路径
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'utils')))
 
-from datetime import datetime, timedelta
-# from app_freshrss.feedsParse import feeds_parse
-from base_db.baseMysql import start_custom_connection
-from base_db.baseMysql import close_connection
-from base_db.baseMysql import write_many, fetch_all
+from app_freshrss.feedsParse import get_entry_list,format_entry_list
 
 # 读取环境变量 - 数据库
 mysql_host = os.getenv('base_mysql_host')
@@ -34,12 +30,6 @@ target_feed_list = [int(item) for item in target_feed_list]
 in_clause = ','.join(['%s'] * len(target_feed_list))
 feed_filter = ', '.join([f'"{item}"' for item in target_feed_list])
 
-today_midnight = datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)
-tomorrow_midnight = today_midnight + timedelta(days=1)
-
-start_ts = int(today_midnight.timestamp())
-end_ts = int(tomorrow_midnight.timestamp()) - 1
-
 entry_query_sql = f'''
 SELECT id, title, author, UNCOMPRESS(content_bin) AS content, 
 link, date, lastSeen, hash, 
@@ -49,11 +39,8 @@ AND is_read = 0
 AND date >= %s AND date <= %s
 '''
 
-mysql_connection = start_custom_connection(mysql_config)
-results = fetch_all(mysql_connection, entry_query_sql, (start_ts, end_ts))
+entry_data = get_entry_list(mysql_config, entry_query_sql, 'day')
+entry_list = format_entry_list(entry_data)
 
-for each in results:
-    print(each['content'].decode('utf-8'))
-
-close_connection(mysql_connection)
-
+for each in entry_list:
+    print(each)
