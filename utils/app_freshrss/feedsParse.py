@@ -4,7 +4,6 @@ import html,os,sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'utils')))
 
 from bs4 import BeautifulSoup
-# from newspaper import Article
 
 from base_db.baseMysql import start_custom_connection
 from base_db.baseMysql import fetch_all, write_many
@@ -48,17 +47,7 @@ def format_entry_list(entry_list: list):
             'tags': each['tags']
         }
 
-        # try:
-        #     article_obj = Article(each['link'])
-        #     article_obj.download()
-        #     article_obj.parse()
-        #     entry_dict['summary'] = article_obj.text[:100]
-        
-        # except:
-        #     entry_dict['summary'] = '暂无摘要'
-
         soup = BeautifulSoup(entry_content,'html.parser')
-        # full_soup = BeautifulSoup(article_obj.html,'html.parser')
         
         try:     
             if soup.find():
