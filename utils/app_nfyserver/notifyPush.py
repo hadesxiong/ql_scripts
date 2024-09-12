@@ -2,8 +2,9 @@
 import json,os,requests
 
 def notify_push(
-        token:str, channel:str, template:str, tmpl_type:int,
-        rcv_type: str, rcv_target: str, msg_dict:dict,call_from:str) -> str:
+        token:str, channel:str, template:str, tmpl_type:int, 
+        rcv_type: str, rcv_target: str, msg_dict:dict,
+        call_from:str, args: dict = None) -> str:
     
     nfyserver_host = os.getenv('app_nfy_url')
     notify_url = f'http://{nfyserver_host}/message/sendMessage'
@@ -20,9 +21,12 @@ def notify_push(
         "call": call_from
     }
 
+    if args:
+        notify_data['message']['args'] = args
+
     notify_headers = {
         'Content-Type': 'application/json',
-        'Authorization': token
+        'Authorization': f'Bearer {token}'
     }
 
     notify_res = requests.post(url=notify_url,data=json.dumps(notify_data),headers=notify_headers)

@@ -63,3 +63,20 @@ def fetch_all(connection, sql:str, data_list: list):
         
     except Exception as e:
         print(e)
+
+
+def fetch_one(connection, sql:str, data_list: list):
+
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(sql,data_list)
+            columns = [col[0] for col in cursor.description]
+            results = cursor.fetchone()
+            if results:
+                structured_result = dict(zip(columns, results))
+                return structured_result
+            else:
+                return None
+        
+    except Exception as e:
+        print(e)
