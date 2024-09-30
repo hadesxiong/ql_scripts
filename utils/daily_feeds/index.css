@@ -1,0 +1,104 @@
+/* daily_feeds */
+
+html {
+  font-family: PingFang SC;
+  font-size: 100%; /* 基准字体大小，这里假设16px是1rem */
+  margin: 0;
+  padding: 0;
+}
+body {
+  height: auto;
+  background-color: #fff;
+}
+.page_main {
+  display: flex;
+  flex-direction: column;
+  gap: 3.6rem; /* 12px -> 0.75rem */
+  align-items: center;
+}
+.container {
+  position: relative;
+}
+.content {
+  position: relative;
+  z-index: 1;
+  padding: 3.6rem; /* 12px -> 0.75rem */
+  display: flex;
+  border-radius: 2.4rem;
+  flex-direction: column;
+  width: 64.2rem; /* 343px -> 21.4rem */
+  height: auto;
+  gap: 2.4rem; /* 8px -> 0.5rem */
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 1.5rem 0 rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(1rem);
+}
+.content_title {
+  color: #000;
+  font-size: 3rem; /* 16px -> 1rem */
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.content_main {
+  display: flex;
+  flex-direction: row;
+  gap: 2.4rem; /* 8px -> 0.5rem */
+}
+.content_abst {
+  color: #7d7e80;
+  font-size: 2.25rem; /* 12px -> 0.75rem */
+  font-style: normal;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  flex: 1 0 0;
+}
+.content_pic {
+  width: 15rem; /* 80px -> 5rem */
+  height: 15rem; /* 80px -> 5rem */
+  border-radius: 2.4rem;
+  box-sizing: border-box;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.content_other {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  font-size: 2.25rem; /* 12px -> 0.75rem */
+  padding-top: 1.2rem; /* 4px -> 0.25rem */
+}
+.content_tag {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2.4rem; /* 8px -> 0.5rem */
+}
+.tag {
+  color: #26638e;
+}
+.content_from {
+  color: #7d7e80;
+}
+.background {
+  /* divB的样式 */
+  position: absolute; /* 绝对定位 */
+  top: 0; /* 与容器顶部对齐 */
+  left: 0; /* 与容器左侧对齐 */
+  width: 100%; /* 宽度与容器相同 */
+  height: 100%; /* 高度与容器相同 */
+  background-size: cover; /* 背景图片覆盖整个元素 */
+  background-position: center; /* 背景图片居中 */
+  z-index: 0; /* 确保背景在内容之下 */
+  border-radius: 2.4rem;
+}

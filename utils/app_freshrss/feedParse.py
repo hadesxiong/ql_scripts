@@ -1,5 +1,5 @@
 # coding=utf8
-import jieba.analyse,os,requests,sys
+import jieba.analyse,json,os,requests,sys
 # 添加引用路径
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'utils')))
 
@@ -48,7 +48,7 @@ def format_entry_list(entry_list: list):
     format_list = []
 
     # 读取来源映射字典
-    feed_dict = os.getenv('app_fresh_target_dict')
+    feed_dict = json.loads(os.getenv('app_fresh_target_dict'))
 
     for each in entry_list:
         
@@ -125,9 +125,6 @@ def set_feed_read(mysql_config:dict, table_name:str, data_list:list):
     update_sql = f'''
     UPDATE {table_name} SET is_read = 1 WHERE id = %s
     '''
-
-    print(update_sql)
-    print(data_list)
 
     write_many(mysql_ins,update_sql,data_list)
 
