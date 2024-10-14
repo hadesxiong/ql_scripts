@@ -22,7 +22,7 @@ def get_page_height(html_path:str,browser_path:str) -> int:
         driver.get(url)
 
         # 等待页面加载
-        driver.implicitly_wait(10)  # 等待10秒，确保页面加载完成
+        driver.implicitly_wait(5)  # 等待10秒，确保页面加载完成
 
         # 获取页面高度
         page_height = driver.execute_script(
@@ -45,7 +45,7 @@ def convert_html_png(html_file:str, css_file:str,ot_path:str,save_as:str,
     
     hti = Html2Image(
         custom_flags=[
-            '--virtual-time-budget=30',
+            '--virtual-time-budget=5',
             '--hide-scrollbars',
             '--no-sandbox'],
         output_path=ot_path)
