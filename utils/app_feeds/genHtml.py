@@ -90,14 +90,14 @@ def format_entry_list(entry_list:list):
             if soup.find():
                 images = soup.find_all('img')
                 src_list = [img.get('src') for img in images if img.get('src')]
-                entry_dict['img'] = src_list[0]
+                entry_dict['background_image'] = src_list[0]
 
             else:
-                entry_dict['img'] = None
+                entry_dict['background_image'] = None
 
         except Exception as e:
             print(e)
-            entry_dict['img'] = None
+            entry_dict['background_image'] = None
 
         format_list.append(entry_dict)
 
