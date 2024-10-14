@@ -36,6 +36,7 @@ def get_page_height(html_path:str,browser_path:str) -> int:
 
     finally:
 
+        driver.close()
         driver.quit()
 
     return page_height if page_height else None
@@ -45,8 +46,9 @@ def convert_html_png(html_file:str, css_file:str,ot_path:str,save_as:str,
     
     hti = Html2Image(
         custom_flags=[
-            '--virtual-time-budget=5',
+            '--virtual-time-budget=30',
             '--hide-scrollbars',
+            '--disable-gpu',
             '--no-sandbox'],
         output_path=ot_path)
     

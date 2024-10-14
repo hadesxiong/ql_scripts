@@ -83,7 +83,7 @@ with open('/ql/data/scripts/utils/app_feeds/template/tmpl_tech.html','r',encodin
             html_file=target_file, 
             css_file='/ql/data/scripts/utils/app_feeds/template/tmpl_tech.css',
             ot_path='/ql/data/scripts/output/img_feeds/', save_as=f'{today_dt}_tech_feeds.png',
-            img_width=1236, img_height=int(page_height)
+            img_width=824, img_height=int(page_height)
         )
 
     else:
