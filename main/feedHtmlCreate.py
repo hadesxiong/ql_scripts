@@ -121,3 +121,6 @@ if main_img_exist and head_img_exist and wx_token.get('token',None):
                                             file_name=head_img_fileName, file_path=head_img_filePath)
     
     print(main_upload_result,head_upload_result)
+
+else:
+    main_upload_result, head_upload_result = {'result':False},{'result':False}
