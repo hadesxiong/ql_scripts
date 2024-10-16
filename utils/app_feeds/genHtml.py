@@ -27,6 +27,8 @@ def gen_html(html_tmpl:Template,
 
     sorted_data = sorted(feeds_data, key=lambda x: (x['background_image'] is not None, x['background_image']), reverse=True)[:10]
 
+    today_dt = datetime.now().strftime('%Y_%m_%d')
+
     for index,item in enumerate(sorted_data):
 
         ban_data = ''
@@ -42,18 +44,22 @@ def gen_html(html_tmpl:Template,
                 if img_response.status_code == 200:
                     img_data = BytesIO(img_response.content)
                     img_file = Image.open(img_data)
-                    
+                    print(img_file)
                     if img_file.mode == 'RGB':
                         img_file = img_file.convert('RGBA')
-
+                    print(img_file)
                     # 调整尺寸
                     origin_width, origin_height = img_file.size
                     new_width = 824
                     new_height = int((origin_height/origin_width)*new_width)
                     resized_img = img_file.resize((new_width, new_height))
                     
-                    file_ext = get_img_extension(item.get('background_image'))[1:]
-                    img_filePath = f'{target_dir}/img/{item["entry_id"]}.{file_ext.lower()}'
+                    if get_img_extension(item.get('background_image')) == '':
+                        file_ext = 'png'
+                    else:
+                        file_ext = get_img_extension(item.get('background_image'))[1:]
+                    # img_filePath = f'{target_dir}/img/{item["entry_id"]}.{file_ext.lower()}'
+                    img_filePath = f'{target_dir}/img/{today_dt}_{index}.{file_ext.lower()}'
 
                     if file_ext in ['jpg', 'jpeg','png','JPG','JPEG','PNG']:
                         resized_img.save(img_filePath,'PNG',quality=85)

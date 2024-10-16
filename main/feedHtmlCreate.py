@@ -1,5 +1,5 @@
 # coding=utf8
-import os,sys
+import os,sys,glob
 from string import Template
 from datetime import datetime
 # 添加引用路径
@@ -8,6 +8,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'u
 from app_freshrss.feedParse import get_entry_list
 from app_feeds.genHtml import gen_html, format_entry_list
 from app_feeds.convertPic import get_page_height, convert_html_png
+from base_wechat.baseApi import get_wx_token, upload_wx_material, create_md_draft
 
 # 读取环境变量 - 数据库
 mysql_host = os.getenv('base_mysql_host')
@@ -27,7 +28,7 @@ mysql_config = {
 # 读取环境变量 - 目标feed
 fresh_entry_table = os.getenv('app_fresh_entry_table')
 fresh_feed_table = os.getenv('app_fresh_feed_table')
-target_feed_list = os.getenv('app_fresh_target').split(',')
+target_feed_list = os.getenv('app_feeds_target').split(',')
 target_feed_list = [int(item) for item in target_feed_list]
 
 # 查询目标数据
@@ -89,3 +90,34 @@ with open('/ql/data/scripts/utils/app_feeds/template/tmpl_tech.html','r',encodin
     else:
 
         print('height not found, cannot convert html files to png')
+
+# 上传到微信
+wx_appid = os.getenv('wx_official_appid_dxmz')
+wx_secret = os.getenv('wx_official_secret_dxmz')
+
+wx_token = get_wx_token(wx_appid,wx_secret)
+
+# 判断html的图片以及头图是否正常生成
+main_img_filePath = f'/ql/data/scripts/output/img_feeds/{today_dt}_tech_feeds.png'
+main_img_fileName = f'{today_dt}_tech_feeds.png'
+main_img_exist = os.path.exists(main_img_filePath)
+
+head_img_pattern = f'/ql/data/scripts/output/feeds/img/{today_dt}_*.*'
+
+head_img_fileList = sorted(glob.glob(head_img_pattern),key=os.path.basename)
+
+head_img_exist = len(head_img_fileList) > 0
+
+if main_img_exist and head_img_exist and wx_token.get('token',None):
+
+    # 上传头图
+    main_upload_result = upload_wx_material(token=wx_token['token'], file_type='image', 
+                                            file_name=main_img_fileName, file_path=main_img_filePath)
+    
+    head_img_filePath = head_img_fileList[0]
+    head_img_fileName = head_img_filePath.split('/')[-1]
+
+    head_upload_result = upload_wx_material(token=wx_token['token'], file_type='image',
+                                            file_name=head_img_fileName, file_path=head_img_filePath)
+    
+    print(main_upload_result,head_upload_result)
