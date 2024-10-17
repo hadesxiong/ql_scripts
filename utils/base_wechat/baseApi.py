@@ -57,14 +57,14 @@ def get_wx_material(token:str='', type:str='image',
     return json.loads(material_res.text)
 
 # 新建图文草稿
-def create_md_draft(token:str='',artcle_list:list=[]) -> dict:
+def create_md_draft(token:str='',article_list:list=[]) -> dict:
 
     wx_draft_url = f'https://api.weixin.qq.com/cgi-bin/draft/add?access_token={token}'
 
     # 标准化处理article对象
     draft_list, fail_list = [], []
 
-    for each in artcle_list:
+    for each in article_list:
         
         # 格式化
         each_format = {

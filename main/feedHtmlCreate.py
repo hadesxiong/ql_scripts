@@ -124,3 +124,23 @@ if main_img_exist and head_img_exist and wx_token.get('token',None):
 
 else:
     main_upload_result, head_upload_result = {'result':False},{'result':False}
+
+if main_upload_result.get('media_id',None) and head_upload_result.get('media_id',None):
+
+    article_data = {
+        'title': f'Tech新闻摘要_{today_dt}',
+        'author': '比尔曼的BOT',
+        'digest': '',
+        'content': f'<img src={main_upload_result["url"]}>',
+        'thumb_media_id': head_upload_result['media_id']
+    }
+
+    article_list = [article_data]
+
+    draft_result = create_md_draft(token=wx_token['token'],article_list=article_list)
+
+    print(draft_result)
+
+else:
+
+    print('upload_failed')
