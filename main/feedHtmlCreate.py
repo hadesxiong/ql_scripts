@@ -127,9 +127,10 @@ else:
 
 if main_upload_result.get('media_id',None) and head_upload_result.get('media_id',None):
 
+    date_str = datetime.now().strftime('%Y.%m.%d')
     article_data = {
-        'title': f'Tech新闻摘要_{today_dt}',
-        'author': '比尔曼的BOT',
+        'title': f'【{date_str}】Tech新闻摘要',
+        'author': "Nero's BOT",
         'digest': '',
         'content': f'<img src={main_upload_result["url"]}>',
         'thumb_media_id': head_upload_result['media_id']

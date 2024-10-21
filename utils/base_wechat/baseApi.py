@@ -93,8 +93,9 @@ def create_md_draft(token:str='',article_list:list=[]) -> dict:
     
     else:
 
-        draft_res = requests.post(wx_draft_url,data={'articles':draft_list})
-        res_data = json.loads(draft_res.text)
+        draft_res = requests.post(wx_draft_url,data=json.dumps({'articles':draft_list}, ensure_ascii=False))
+        # res_data = json.loads(draft_res.text)
+        res_data = json.loads(draft_res.text.encode('latin1').decode('utf-8'))
 
         if res_data.get('media_id',None):
             return {'result':True, 'count_pass':len(draft_list), 'count_fail':len(fail_list),'media_id':res_data['media_id']}
