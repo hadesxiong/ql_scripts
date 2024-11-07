@@ -49,13 +49,13 @@ if entry_data:
     for each in entry_data:
 
         update_dict = {
-            'feed_id': f"feed_{each['id']}",
-            'feed_title': each['title'],
-            'feed_content': each['content'].decode('utf-8'),
-            'feed_img': '',
-            'feed_link': each['feed_link'],
-            'feed_dt': each['date'],
-            'feed_resource': str(each['id_feed'])
+            'feed': f"feed_{each['id']}",
+            'title': each['title'],
+            'content': each['content'].decode('utf-8'),
+            'img': '',
+            'link': each['feed_link'],
+            'dt': each['date'],
+            'resource': str(each['id_feed'])
         }
 
         soup = BeautifulSoup(update_dict['feed_content'],'html.parser')
@@ -64,17 +64,17 @@ if entry_data:
             if soup.find():
                 images = soup.find_all('img')
                 src_list = [img.get('src') for img in images if img.get('src')]
-                update_dict['feed_img'] = src_list[0]
+                update_dict['img'] = src_list[0]
 
             else:
-                update_dict['feed_img'] = None
+                update_dict['img'] = None
 
         except Exception as e:
-            update_dict['feed_img'] = None
+            update_dict['img'] = None
 
         format_list.append(update_dict)
 
-    feed_url = 'http://env_wxfeeds/feed/feedAdd'
+    feed_url = 'http://env_wxfeeds:8000/feed/feedAdd'
     feed_data = {'data':format_list}
     feed_rslt = requests.post(feed_url, json=feed_data)
 

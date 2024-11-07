@@ -44,7 +44,7 @@ def get_entry_list(mysql_config:dict, sql:str, type:str):
         hour_dt = datetime.now().replace(minute=0,second=0,microsecond=0)
 
         start_ts = int((hour_dt - timedelta(hours=1)).timestamp())
-        end_ts = int(hour_dt.timestamp()) - 1
+        end_ts = int(hour_dt.timestamp()) - 2
 
         results = fetch_all(mysql_ins, sql, (start_ts, end_ts))
 
