@@ -28,6 +28,9 @@ fresh_feed_table = os.getenv('app_fresh_feed_table')
 target_feed_list = os.getenv('add_feed_target').split(',')
 target_feed_list = [int(item) for item in target_feed_list]
 
+# 读取环境变量 - feed分类
+feed_class_table = json.loads(os.getenv('app_feed_class'))
+
 # 查询目标数据
 in_clause = ','.join(['%s'] * len(target_feed_list))
 feed_filter = ', '.join([f'"{item}"' for item in target_feed_list])
@@ -55,7 +58,8 @@ if entry_data:
             'img': '',
             'link': each['feed_link'],
             'dt': each['date'],
-            'resource': str(each['id_feed'])
+            'resource': str(each['id_feed']),
+            'class': feed_class_table.get(str(each['id_feed']),0)
         }
 
         soup = BeautifulSoup(update_dict['feed_content'],'html.parser')
