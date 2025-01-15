@@ -13,7 +13,8 @@ def getToken() -> str:
 
     token_url = f'{tb_url}/appToken'
     token_data = {'appId': tb_appId, 'appSecret': tb_appSecret}
-    token_res = requests.post(token_url, data=token_data)
+    token_headers = {'Content-Type':'application/json'}
+    token_res = requests.post(token_url, headers=token_headers, data=json.dumps(token_data))
 
     return token_res.json().get('appToken', 'blank')
 
@@ -25,21 +26,23 @@ def createTask(token:str, data: dict) -> dict:
         'Authorization': f'Bearer {token}',
         'X-Tenant-Id': tb_tenant,
         'X-Tenant-Type': 'organization',
-        'x-operator-id': tb_creator
+        'x-operator-id': tb_creator,
+        'Content-Type': 'application/json'
     }
-    task_res = requests.post(task_url, headers=task_headers,data=data)
+    task_res = requests.post(task_url, headers=task_headers,data=json.dumps(data))
     return task_res.json()
 
 # 查询任务
-def queryTask(token:str, proj:str) -> dict:
+def queryTask(token:str, proj:str, params:dict) -> dict:
 
     task_url = f'{tb_url}/v3/project/{proj}/task/query'
     task_headers = {
         'Authorization': f'Bearer {token}',
         'X-Tenant-Id': tb_tenant,
         'X-Tenant-Type': 'organization',
-        'x-operator-id': tb_creator
+        'x-operator-id': tb_creator,
+        'Content-Type': 'application/json'
     }
 
-    task_res = requests.get(task_url, headers=task_headers)
+    task_res = requests.get(task_url, headers=task_headers, params=params)
     return task_res.json()
