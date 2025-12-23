@@ -74,14 +74,15 @@ REDIS_CONFIG = {
     "port": os.getenv("REDIS_PORT", 6379),
     "password": os.getenv("REDIS_PWD"),
     "db": os.getenv("REDIS_DB"),
-    "decode_responses": os.getenv("REDIS_DECODE", True),
+    "decode_responses": os.getenv("REDIS_DECODE", "true"),
     "encoding": os.getenv("REDIS_ENCODE", "utf-8")
 }
 
-redis_pool = redis.ConnectionPool(
-    "redis://:{password}@{host}:{port}/{db}?decode_responses={decode_responses}&encoding={encoding}".format(
+redis_url = "redis://:{password}@{host}:{port}/{db}?decode_responses={decode_responses}&encoding={encoding}".format(
         **REDIS_CONFIG
-    ))
+    )
+
+redis_pool = redis.ConnectionPool.from_url(redis_url)
 
 redis_conn = redis.Redis(connection_pool = redis_pool)
 
@@ -92,6 +93,6 @@ for group_num in range(0,len(samples),1000):
 
     for index,item in enumerate(chunk):
         pipeline = redis_conn.pipeline()
-        pipeline.hmset(index, item)
+        pipeline.hset(index, item)
 
     pipeline.execute()
