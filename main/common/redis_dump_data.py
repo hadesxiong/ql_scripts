@@ -1,5 +1,5 @@
 # coding=utf8
-import os,redis
+import os,redis,json
 import pandas as pd
 
 REDIS_CONFIG = {
@@ -18,4 +18,11 @@ redis_conn = redis.Redis(connection_pool=redis_pool)
 
 topic_data = redis_conn.lrange('hr_topic_train_data_0', 0, -1)
 
-print(type(topic_data))
+encoded_topic_data = [json.loads(item) for item in topic_data]
+title_list = [item["title"] for item in encoded_topic_data]
+
+df = pd.DataFrame(title_list, columns=["title"])
+
+df.to_csv("/mnt/score.csv",index=False, encoding='utf-8-sig')
+
+print("数据已导出")
