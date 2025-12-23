@@ -2,6 +2,7 @@
 
 import os, json, redis
 import pandas as pd
+from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, time
 from sqlalchemy import create_engine, text
 
@@ -35,7 +36,7 @@ engine = create_engine(
 
 # 3. 拼装sql语句
 sql = text(f"""
-    SELECT title, link, id_feed, tags
+    SELECT title, link, id_feed, tags, content
     FROM "Nero_entry"
     WHERE {TS_COL} BETWEEN :start_ts AND :end_ts
     AND {ID_COL} = ANY(:id_feeds)
@@ -51,6 +52,22 @@ df = pd.read_sql(sql,
 
 # 4. 打印postgresql查询结果
 print(f"共抽取 {len(df)} 条记录")
+
+# 利用beautifulsoup格式化content字段
+def html_to_text(html_content):
+    if pd.isna(html_content):
+        return ''
+    try:
+        soup = BeautifulSoup(str(html_content), 'html.parser')
+        text = soup.get_text(separator = '\n', strip = True)
+        lines = [line.strip() for line in text.split('\n') if line.strip()]
+        text = '\n'.join(lines)
+        return text
+    except Exception as e:
+        print('解析错误: {e}')
+        return str(html_content)
+
+df['content_plain'] = df['content'].apply(html_to_text)
 records = df.to_dict(orient="records")
 
 # 5. 将数据写入redis
