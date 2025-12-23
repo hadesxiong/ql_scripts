@@ -93,6 +93,7 @@ for group_num in range(0,len(samples),1000):
 
     for index,item in enumerate(chunk):
         pipeline = redis_conn.pipeline()
-        pipeline.hset(index, item)
+        encoded_item = {k: str(v) for k, v in item.items()}
+        pipeline.hset(index, mapping=encoded_item)
 
     pipeline.execute()
