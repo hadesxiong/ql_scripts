@@ -93,4 +93,4 @@ for group_num in range(0,len(samples),1000):
 
     for index,item in enumerate(chunk):
         encoded_item = {k: str(v) for k, v in item.items()}
-        redis_conn.hset(index, mapping=encoded_item)
+        redis_conn.hset(title, {index: item})
