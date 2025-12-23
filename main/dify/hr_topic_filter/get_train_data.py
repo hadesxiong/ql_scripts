@@ -46,6 +46,7 @@ df = pd.read_sql(sql,
                  })
 # 转换成dict
 data_list = df.to_dict(orient="records")
+print(len(data_list))
 
 # 筛选可能相关的话题
 hr_patterns = [
@@ -64,8 +65,8 @@ for each in data_list:
                 "label": "人事相关",
                 "category": "待细分"
             })
-            break
 
+print(len(samples))
 # 将数据写入redis，每1000条写一轮
 
 REDIS_CONFIG = {
