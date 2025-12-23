@@ -1,6 +1,6 @@
 # coding=utf8
 # 获取一定数量的数据
-import os, redis, re
+import os, redis, re, json
 import pandas as pd
 
 from datetime import datetime, timedelta, time
@@ -50,16 +50,15 @@ print(len(data_list))
 
 # 筛选可能相关的话题
 hr_patterns = [
-        r"(工资|薪资|薪酬|奖金|年终奖|福利|社保|公积金)",
-        r"(晋升|升职|加薪|跳槽|离职|裁员|招聘|面试)",
-        r"(劳动法|劳动合同|劳动仲裁|人社部|政策|规定|条例)"
-    ]
+    r"(工资|薪资|薪酬|奖金|年终奖|福利|社保|公积金)", r"(晋升|升职|加薪|跳槽|离职|裁员|招聘|面试)",
+    r"(劳动法|劳动合同|劳动仲裁|人社部|政策|规定|条例)"
+]
 
 samples = []
 
 for each in data_list:
     for pattern in hr_patterns:
-        if re.search(pattern,each["title"]):
+        if re.search(pattern, each["title"]):
             samples.append({
                 "title": each["title"],
                 "label": "人事相关",
@@ -73,24 +72,23 @@ REDIS_CONFIG = {
     "host": os.getenv("REDIS_HOST", "redis_sit1"),
     "port": os.getenv("REDIS_PORT", 6379),
     "password": os.getenv("REDIS_PWD"),
-    "db": os.getenv("REDIS_DB",0),
+    "db": os.getenv("REDIS_DB", 0),
     "decode_responses": os.getenv("REDIS_DECODE", "true"),
     "encoding": os.getenv("REDIS_ENCODE", "utf-8")
 }
 
 redis_url = "redis://:{password}@{host}:{port}/{db}?decode_responses={decode_responses}&encoding={encoding}".format(
-        **REDIS_CONFIG
-    )
+    **REDIS_CONFIG)
 
 redis_pool = redis.ConnectionPool.from_url(redis_url)
 
-redis_conn = redis.Redis(connection_pool = redis_pool)
+redis_conn = redis.Redis(connection_pool=redis_pool)
 
-for group_num in range(0,len(samples),1000):
+for group_num in range(0, len(samples), 1000):
 
     chunk = samples[group_num:group_num + 1000]
     title = f"hr_topic_train_data_{chunk}"
 
-    for index,item in enumerate(chunk):
+    for index, item in enumerate(chunk):
         encoded_item = {k: str(v) for k, v in item.items()}
-        redis_conn.hset(title, {index: item})
+        redis_conn.hset(title, {index: json.dumps(item)})
