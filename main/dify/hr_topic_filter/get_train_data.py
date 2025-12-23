@@ -13,7 +13,7 @@ DB_CONFIG = {
     "port": int(os.getenv("PGPORT", 5432)),
     "dbname": os.getenv("PGDATABASE", "app_freshrss_db"),
     "user": os.getenv("PGUSER", "postgres"),
-    "password": os.getenv("PGPASSWORD", "Faurecia614"),
+    "password": os.getenv("PGPASSWORD"),
 }
 
 # 配置时间
