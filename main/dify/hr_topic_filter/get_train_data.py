@@ -20,7 +20,7 @@ DB_CONFIG = {
 
 today_utc = datetime.today()
 START_TS = int(
-    datetime.combine(today_utc - timedelta(days=7), time.min).timestamp())
+    datetime.combine(today_utc - timedelta(days=30), time.min).timestamp())
 END_TS = int(datetime.combine(today_utc, time.max).timestamp())
 
 # 建立数据库连接
@@ -87,8 +87,7 @@ redis_conn = redis.Redis(connection_pool=redis_pool)
 for group_num in range(0, len(samples), 1000):
 
     chunk = samples[group_num:group_num + 1000]
-    title = f"hr_topic_train_data_{chunk}"
+    title = f"hr_topic_train_data_{group_num}"
 
     for index, item in enumerate(chunk):
-        encoded_item = {k: str(v) for k, v in item.items()}
-        redis_conn.hset(title, {index: json.dumps(item)})
+        redis_conn.rpush(title, json.dumps(item))
