@@ -73,7 +73,7 @@ REDIS_CONFIG = {
     "host": os.getenv("REDIS_HOST", "redis_sit1"),
     "port": os.getenv("REDIS_PORT", 6379),
     "password": os.getenv("REDIS_PWD"),
-    "db": os.getenv("REDIS_DB"),
+    "db": os.getenv("REDIS_DB",0),
     "decode_responses": os.getenv("REDIS_DECODE", "true"),
     "encoding": os.getenv("REDIS_ENCODE", "utf-8")
 }
@@ -92,8 +92,5 @@ for group_num in range(0,len(samples),1000):
     title = f"hr_topic_train_data_{chunk}"
 
     for index,item in enumerate(chunk):
-        pipeline = redis_conn.pipeline()
         encoded_item = {k: str(v) for k, v in item.items()}
-        pipeline.hset(index, mapping=encoded_item)
-
-    pipeline.execute()
+        redis_conn.hset(index, mapping=encoded_item)
