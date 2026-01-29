@@ -6,11 +6,11 @@ from sqlalchemy import create_engine, text
 
 # 配置postgresql参数
 DB_CONFIG = {
-    "host": os.getenv("fetch_feed_pghost", "postgresql_sit1"),
+    "host": os.getenv("fetch_feed_pghost"),
     "port": int(os.getenv("fetch_feed_pgport", 5432)),
-    "dbname": os.getenv("fetch_feed_pgdb", "app_freshrss_db"),
+    "dbname": os.getenv("fetch_feed_pgdb"),
     "user": os.getenv("fetch_feed_pguser", "postgres"),
-    "password": os.getenv("fetch_feed_pgpwd", "Faurecia614"),
+    "password": os.getenv("fetch_feed_pgpwd"),
 }
 
 TABLE_NAME = os.getenv("fetch_feed_table_name")
@@ -23,7 +23,8 @@ START_TS = int(
     datetime.combine(today_utc - timedelta(days=2), time.min).timestamp())
 END_TS = int(datetime.combine(today_utc, time.max).timestamp())
 
-ID_FEEDS = os.getenv('fetch_feed_id_feeds')
+# ID_FEEDS = os.getenv('fetch_feed_id_feeds')
+ID_FEEDS = [76]
 
 # 建立postgresql数据库连接
 engine = create_engine(
