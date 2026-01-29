@@ -1,6 +1,7 @@
 # coding=utf8
 import os,json,redis
 import pandas as pd
+from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, time
 from sqlalchemy import create_engine, text
 
