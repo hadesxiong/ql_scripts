@@ -21,8 +21,8 @@ ID_COL = "id_feed"
 # 自然日期转换成秒级时间戳
 today_utc = datetime.today()
 START_TS = int(
-    datetime.combine(today_utc - timedelta(days=2), time.min).timestamp())
-END_TS = int(datetime.combine(today_utc, time.max).timestamp())
+    datetime.combine(today_utc - timedelta(days=1), time.min).timestamp())
+END_TS = int(datetime.combine(today_utc - timedelta(days=1), time.max).timestamp())
 
 # ID_FEEDS = os.getenv('fetch_feed_id_feeds')
 ID_FEEDS = [76]
