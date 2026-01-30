@@ -82,4 +82,4 @@ redis_pool = redis.ConnectionPool(host=redis_host,
 redis_conn = redis.Redis(connection_pool=redis_pool)
 
 record_str = json.dumps(records, ensure_ascii=False, indent=None)
-redis_conn.set(f'{datetime.now().strftime("%Y-%m-%d")}_hr_topic', record_str)
+redis_conn.set(f'{(datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")}_hr_topic', record_str)
