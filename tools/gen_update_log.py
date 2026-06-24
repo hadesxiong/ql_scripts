@@ -8,8 +8,10 @@ def run_cmd(cmd):
 
 # 获取本次暂存变更文件
 changed_files = run_cmd("git diff --cached --name-only").splitlines()
+# 无暂存文件时降级为未跟踪的新文件（用于首次提交前文档预览）
+if not changed_files:
+    changed_files = run_cmd("git ls-files --others --exclude-standard").splitlines()
 script_ext = (".py", ".sh", ".js", ".ts")
-# 过滤仅业务脚本，排除组件、工具、CI
 target_files = []
 for f in changed_files:
     if f.endswith(script_ext) and not f.startswith(("components/", "tools/", ".github/")):
