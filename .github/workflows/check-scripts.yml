@@ -35,9 +35,9 @@ jobs:
       # 3. JS / TS 语法校验
       - name: JS TS 语法校验
         run: |
-          eslint js/*/main.js components/js/*.js --ext .js --no-error-on-unmatched-pattern
-          eslint ts/*/main.ts components/ts/*.ts --ext .ts --no-error-on-unmatched-pattern
-
+          if ls js/*/main.js components/js/*.js 2>/dev/null; then eslint js/*/main.js components/js/*.js --ext .js; fi
+          if ls ts/*/main.ts components/ts/*.ts 2>/dev/null; then eslint ts/*/main.ts components/ts/*.ts --ext .ts; fi
+            
       # 4. 校验业务脚本目录完整性（必须main入口+README）
       - name: 校验业务脚本目录规范
         run: |
