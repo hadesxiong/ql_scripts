@@ -1,0 +1,103 @@
+name: Script & Component Lint Check
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  full-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 安装Python环境
+        run: python -m pip install --upgrade pip
+
+      - name: 安装ShellCheck
+        run: sudo apt install shellcheck -y
+
+      - name: 安装Node & ESLint & TS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install -g eslint typescript @types/node
+
+      # 1. Python语法校验
+      - name: Python 语法检测
+        run: find py/*/main.py components/py/*.py -type f | xargs python -m py_compile
+
+      # 2. Shell语法校验
+      - name: Shell 脚本规范检测
+        run: find shell/*/main.sh components/sh/*.sh -type f | xargs shellcheck -x
+
+      # 3. JS / TS 语法校验
+      - name: JS TS 语法校验
+        run: |
+          eslint js/*/main.js components/js/*.js --ext .js
+          eslint ts/*/main.ts components/ts/*.ts --ext .ts
+
+      # 4. 校验业务脚本目录完整性（必须main入口+README）
+      - name: 校验业务脚本目录规范
+        run: |
+          python3 - <<END
+          import os
+          fail = False
+          lang_map = {
+              "py": "main.py",
+              "shell": "main.sh",
+              "js": "main.js",
+              "ts": "main.ts"
+          }
+          for lang, entry in lang_map.items():
+              if not os.path.exists(lang):
+                  continue
+              for folder in os.listdir(lang):
+                  fd = os.path.join(lang, folder)
+                  if not os.path.isdir(fd):
+                      continue
+                  readme = os.path.join(fd, "README.md")
+                  entry_file = os.path.join(fd, entry)
+                  if not os.path.exists(readme):
+                      print(f"缺失脚本说明 {readme}")
+                      fail = True
+                  if not os.path.exists(entry_file):
+                      print(f"缺失入口文件 {entry_file}")
+                      fail = True
+          if fail:
+              exit(1)
+          END
+
+      # 5. 校验components组件第二行必须带@desc注释
+      - name: 校验公共组件注释规范
+        run: |
+          python3 - <<END
+          import os, re
+          fail = False
+          pattern = re.compile(r"^# @desc\s+.+$|^// @desc\s+.+$")
+          suffix = (".py", ".sh", ".js", ".ts")
+          for root, _, files in os.walk("components"):
+              for f in files:
+                  if f.endswith(suffix):
+                      fp = os.path.join(root, f)
+                      with open(fp, "r", encoding="utf-8") as fobj:
+                          lines = [x.strip() for x in fobj.readlines()]
+                      if len(lines) < 2:
+                          print(f"组件{fp}行数不足，缺少第二行@desc")
+                          fail = True
+                          continue
+                      if not pattern.match(lines[1]):
+                          print(f"组件{fp}第二行无合法@desc说明")
+                          fail = True
+          if fail:
+              exit(1)
+          END
+
+      - name: 校验文档文件是否最新
+        run: |
+          python3 tools/gen_all.py
+          if ! git diff --exit-code; then
+            echo "❌ 文档文件过期，请执行 python3 tools/gen_all.py 并提交变更"
+            exit 1
+          fi
