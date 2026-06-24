@@ -25,11 +25,11 @@
 ## 全部业务脚本清单（自动生成）
 
 ### Python脚本
-- [新闻资讯去重推送 news_dedup](./py/news_dedup/README.md)：从 Miniflux 拉取新闻去重后推送 Dify
-- [每日工作日报 daily_report](./py/daily_report/README.md)：查询 Plane 待完成任务并推送 Hookshot 通知
-- [CookieCloud-Cookie同步脚本 async_cookie](./py/async_cookie/README.md)：解密 CookieCloud 加密数据并写入 .env 文件
-- [每周工作周报 weekly_report](./py/weekly_report/README.md)：查询 Plane 本周完成工作并汇总推送
-- [资讯Feed同步脚本 fetch_feed](./py/fetch_feed/README.md)：读取 PostgreSQL 昨日资讯存入 Redis
-- [人力资源自媒体资讯分析 hr_analysis](./py/hr_analysis/README.md)：从 Miniflux 拉取 HR 资讯清洗后推送 Dify
+- [CookieCloud-Cookie同步脚本 async_cookie](./py\async_cookie\README.md)：解密 CookieCloud 加密数据并写入 .env 文件
+- [每日工作日报 daily_report](./py\daily_report\README.md)：查询 Plane 待完成任务并推送 Hookshot 通知
+- [资讯Feed同步脚本 fetch_feed](./py\fetch_feed\README.md)：读取 PostgreSQL 昨日资讯存入 Redis
+- [人力资源自媒体资讯分析 hr_analysis](./py\hr_analysis\README.md)：从 Miniflux 拉取 HR 资讯清洗后推送 Dify
+- [新闻资讯去重推送 news_dedup](./py\news_dedup\README.md)：从 Miniflux 拉取新闻去重后推送 Dify
+- [每周工作周报 weekly_report](./py\weekly_report\README.md)：查询 Plane 本周完成工作并汇总推送
 
 <!-- AUTO_SCRIPT_LIST_END -->

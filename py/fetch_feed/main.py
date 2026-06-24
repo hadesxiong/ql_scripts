@@ -18,6 +18,9 @@ sys.path.insert(0, str(BASE_ROOT))
 from components.py.pg_client import get_pg_engine, query_to_df
 from components.py.html_parser import html_to_text
 from components.py.redis_client import get_redis_conn
+from components.py.env_loader import load_script_env
+
+load_script_env(Path(__file__).parent)
 
 # ====================== 业务常量配置 ======================
 TABLE_NAME = os.getenv("fetch_feed_table_name", "Nero_entry")

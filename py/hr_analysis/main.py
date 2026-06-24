@@ -15,6 +15,9 @@ sys.path.insert(0, str(BASE_ROOT))
 
 from components.py.html_parser import html_to_text
 from components.py.dify_client import dify_webhook_send
+from components.py.env_loader import load_script_env
+
+load_script_env(Path(__file__).parent)
 
 def main():
     DB_CONFIG = {

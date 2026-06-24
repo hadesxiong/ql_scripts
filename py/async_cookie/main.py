@@ -13,6 +13,9 @@ BASE_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(BASE_ROOT))
 
 from components.py.aes_crypt import cookiecloud_decrypt
+from components.py.env_loader import load_script_env
+
+load_script_env(Path(__file__).parent)
 
 def main():
     cc_url = os.getenv('app_cookiecloud_url', '').rstrip('/')
