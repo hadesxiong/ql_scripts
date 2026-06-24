@@ -25,11 +25,11 @@
 ## 全部业务脚本清单（自动生成）
 
 ### Python脚本
-- [新闻资讯去重推送 news_dedup](./py/news_dedup/README.md)：1. 从 Miniflux 查询多 feed 新闻资讯；
-- [每日工作日报 daily_report](./py/daily_report/README.md)：1. 查询 Plane 数据库中 7 日内待完成任务；
-- [CookieCloud-Cookie同步脚本 async_cookie](./py/async_cookie/README.md)：1. 从 CookieCloud 服务器拉取加密 Cookie 数据；
-- [每周工作周报 weekly_report](./py/weekly_report/README.md)：1. 查询 Plane 数据库中本周已完成任务；
-- [资讯Feed同步脚本 fetch_feed](./py/fetch_feed/README.md)：1. 读取PostgreSQL中昨日资讯数据；
-- [人力资源自媒体资讯分析 hr_analysis](./py/hr_analysis/README.md)：1. 从 Miniflux 查询当日人力资源相关资讯；
+- [新闻资讯去重推送 news_dedup](./py/news_dedup/README.md)：从 Miniflux 拉取新闻去重后推送 Dify
+- [每日工作日报 daily_report](./py/daily_report/README.md)：查询 Plane 待完成任务并推送 Hookshot 通知
+- [CookieCloud-Cookie同步脚本 async_cookie](./py/async_cookie/README.md)：解密 CookieCloud 加密数据并写入 .env 文件
+- [每周工作周报 weekly_report](./py/weekly_report/README.md)：查询 Plane 本周完成工作并汇总推送
+- [资讯Feed同步脚本 fetch_feed](./py/fetch_feed/README.md)：读取 PostgreSQL 昨日资讯存入 Redis
+- [人力资源自媒体资讯分析 hr_analysis](./py/hr_analysis/README.md)：从 Miniflux 拉取 HR 资讯清洗后推送 Dify
 
 <!-- AUTO_SCRIPT_LIST_END -->

@@ -30,13 +30,13 @@ jobs:
 
       # 2. Shell语法校验
       - name: Shell 脚本规范检测
-        run: find shell/*/main.sh components/sh/*.sh -type f | xargs shellcheck -x
+        run: find shell/*/main.sh components/sh/*.sh -type f 2>/dev/null | xargs -r shellcheck -x
 
       # 3. JS / TS 语法校验
       - name: JS TS 语法校验
         run: |
-          eslint js/*/main.js components/js/*.js --ext .js
-          eslint ts/*/main.ts components/ts/*.ts --ext .ts
+          eslint js/*/main.js components/js/*.js --ext .js --no-error-on-unmatched-pattern
+          eslint ts/*/main.ts components/ts/*.ts --ext .ts --no-error-on-unmatched-pattern
 
       # 4. 校验业务脚本目录完整性（必须main入口+README）
       - name: 校验业务脚本目录规范

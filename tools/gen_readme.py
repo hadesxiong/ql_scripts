@@ -13,14 +13,20 @@ lang_folder_map = {
 }
 
 def extract_script_info(readme_path):
-    """从单脚本README提取名称、简介"""
     try:
         with open(readme_path, "r", encoding="utf-8") as f:
             text = f.read()
         title_match = re.search(r"# (.+)", text)
-        desc_match = re.search(r"## 功能简介\s*\n(.+)", text, re.MULTILINE)
         name = title_match.group(1).strip() if title_match else "未知脚本"
-        desc = desc_match.group(1).strip() if desc_match else "无简介"
+
+        # 优先取描述，无则取功能简介第一行
+        brief_match = re.search(r"## 描述\s*\n(.+)", text, re.MULTILINE)
+        if brief_match:
+            desc = brief_match.group(1).strip()
+        else:
+            desc_match = re.search(r"## 功能简介\s*\n(.+)", text, re.MULTILINE)
+            desc = desc_match.group(1).strip() if desc_match else "无简介"
+
         return name, desc
     except:
         return "读取失败", ""

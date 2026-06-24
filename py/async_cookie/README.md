@@ -1,5 +1,8 @@
 # CookieCloud-Cookie同步脚本 async_cookie
 
+## 描述
+解密 CookieCloud 加密数据并写入 .env 文件
+
 ## 基础信息
 - 脚本入口：`py/async_cookie/main.py`
 - 开发语言：Python3

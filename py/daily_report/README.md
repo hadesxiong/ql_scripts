@@ -1,5 +1,8 @@
 # 每日工作日报 daily_report
 
+## 描述
+查询 Plane 待完成任务并推送 Hookshot 通知
+
 ## 基础信息
 - 脚本入口：`py/daily_report/main.py`
 - 开发语言：Python3

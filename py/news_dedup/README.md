@@ -1,5 +1,8 @@
 # 新闻资讯去重推送 news_dedup
 
+## 描述
+从 Miniflux 拉取新闻去重后推送 Dify
+
 ## 基础信息
 - 脚本入口：`py/news_dedup/main.py`
 - 开发语言：Python3

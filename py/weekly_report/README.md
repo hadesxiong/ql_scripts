@@ -1,5 +1,8 @@
 # 每周工作周报 weekly_report
 
+## 描述
+查询 Plane 本周完成工作并汇总推送
+
 ## 基础信息
 - 脚本入口：`py/weekly_report/main.py`
 - 开发语言：Python3

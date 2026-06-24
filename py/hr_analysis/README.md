@@ -1,5 +1,8 @@
 # 人力资源自媒体资讯分析 hr_analysis
 
+## 描述
+从 Miniflux 拉取 HR 资讯清洗后推送 Dify
+
 ## 基础信息
 - 脚本入口：`py/hr_analysis/main.py`
 - 开发语言：Python3

@@ -1,5 +1,8 @@
 # 资讯Feed同步脚本 fetch_feed
 
+## 描述
+读取 PostgreSQL 昨日资讯存入 Redis
+
 ## 基础信息
 - 脚本入口：`py/fetch_feed/main.py`
 - 开发语言：Python3
